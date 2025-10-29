@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
+import type { AppDispatch } from '../store';
 import { fetchPosts, selectPosts, selectPostsStatus } from '../features/posts/postsSlice';
 import { selectSearch, selectSubreddit } from '../features/ui/uiSlice';
 import PostCard from './PostCard';

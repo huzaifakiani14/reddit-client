@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { RedditPost } from '../features/posts/postsSlice';
+import type { RedditPost } from '../features/posts/postsSlice';
 
 dayjs.extend(relativeTime);
 

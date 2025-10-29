@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
+import type { AppDispatch } from '../store';
 import { selectSubreddit, setSubreddit } from '../features/ui/uiSlice';
 import { fetchPosts } from '../features/posts/postsSlice';
 
@@ -17,7 +17,7 @@ export default function Filters() {
 						dispatch(setSubreddit(s));
 						dispatch(fetchPosts({ subreddit: s }));
 					}}
-					className={`px-3 py-1 rounded-full border text-sm ${subreddit === s ? 'bg-brand text-white border-brand' : 'border-neutral-300 dark:border-neutral-700'}`}
+					className={`px-3 py-1 rounded-full border text-sm text-white ${subreddit === s ? 'bg-brand border-brand' : 'border-neutral-300 dark:border-neutral-700'}`}
 				>
 					{s}
 				</button>

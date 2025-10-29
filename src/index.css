@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
 	--brand: #ff4500;
@@ -11,10 +9,11 @@ html, body, #root {
 }
 
 body {
-	@apply bg-white text-slate-900 antialiased dark:bg-neutral-900 dark:text-neutral-100;
 	margin: 0;
+	background-color: #ffffff;
+	color: #0f172a;
 }
 
 a {
-	@apply text-brand hover:text-brand-dark;
+	color: var(--brand);
 }

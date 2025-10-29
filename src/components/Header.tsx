@@ -1,6 +1,7 @@
-import { FormEvent, useCallback } from 'react';
+import type { FormEvent } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store';
+import type { AppDispatch } from '../store';
 import { selectSearch, setSearch } from '../features/ui/uiSlice';
 import { fetchPosts } from '../features/posts/postsSlice';
 

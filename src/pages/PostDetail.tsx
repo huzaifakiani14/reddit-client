@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { AppDispatch } from '../store';
+import type { AppDispatch } from '../store';
 import { fetchPostWithComments, selectComments, selectCommentsStatus, selectSelectedPost } from '../features/posts/postsSlice';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -37,9 +37,9 @@ export default function PostDetail() {
 				{comments.map((c) => (
 					<article key={c.id} className="rounded border border-neutral-200 dark:border-neutral-800 p-3">
 						<p className="text-sm text-neutral-500 mb-2">u/{c.author}</p>
-						<ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} className="prose dark:prose-invert max-w-none">
-							{c.body}
-						</ReactMarkdown>
+						<div className="prose dark:prose-invert max-w-none">
+							<ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>{c.body}</ReactMarkdown>
+						</div>
 					</article>
 				))}
 			</section>
