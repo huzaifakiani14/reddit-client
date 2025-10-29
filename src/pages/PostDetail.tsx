@@ -22,22 +22,22 @@ export default function PostDetail() {
 	}, [dispatch, location.pathname]);
 
 	if (!post) {
-		return <div className="mx-auto max-w-3xl px-4 py-10 text-neutral-500">Loading post...</div>;
+		return <div className="mx-auto max-w-3xl px-4 py-10 text-white">Loading post...</div>;
 	}
 
 	return (
-		<main className="mx-auto max-w-3xl px-4 py-6 grid gap-6">
+		<main className="mx-auto max-w-3xl px-4 py-6 grid gap-6 text-white">
 			<article className="grid gap-2">
 				<h1 className="text-2xl font-bold">{post.title}</h1>
-				<p className="text-sm text-neutral-500">u/{post.author} in r/{post.subreddit}</p>
+				<p className="text-sm opacity-70">u/{post.author} in r/{post.subreddit}</p>
 			</article>
 			<section className="grid gap-2">
 				<h2 className="font-semibold">Comments</h2>
-				{commentsStatus === 'loading' && <div className="text-neutral-500">Loading comments...</div>}
+				{commentsStatus === 'loading' && <div className="opacity-70">Loading comments...</div>}
 				{comments.map((c) => (
-					<article key={c.id} className="rounded border border-neutral-200 dark:border-neutral-800 p-3">
-						<p className="text-sm text-neutral-500 mb-2">u/{c.author}</p>
-						<div className="prose dark:prose-invert max-w-none">
+					<article key={c.id} className="rounded border border-neutral-800 p-3">
+						<p className="text-sm opacity-70 mb-2">u/{c.author}</p>
+						<div className="prose prose-invert max-w-none">
 							<ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>{c.body}</ReactMarkdown>
 						</div>
 					</article>
