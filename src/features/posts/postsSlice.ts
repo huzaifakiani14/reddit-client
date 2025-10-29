@@ -2,8 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 
-const isProd = typeof window !== 'undefined' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
-
 export type RedditPost = {
 	id: string;
 	title: string;
@@ -58,12 +56,10 @@ export const fetchPosts = createAsyncThunk(
 		if (state.posts.cache[key]) {
 			return { key, posts: state.posts.cache[key] };
 		}
-		const url = isProd
-			? `/api/list?${new URLSearchParams({ subreddit: params.subreddit || 'popular', ...(params.search ? { search: params.search } : {}) }).toString()}`
-			: params.search
-				? `https://www.reddit.com/search.json?q=${encodeURIComponent(params.search)}`
-				: `https://www.reddit.com/r/${params.subreddit || 'popular'}.json`;
-		const res = await fetch(url);
+		const base = params.search
+			? `https://www.reddit.com/search.json?q=${encodeURIComponent(params.search)}`
+			: `https://www.reddit.com/r/${params.subreddit || 'popular'}.json`;
+		const res = await fetch(base);
 		if (!res.ok) throw new Error(`Failed to load posts (${res.status})`);
 		const json = await res.json();
 		const posts: RedditPost[] = (json?.data?.children || [])
@@ -86,7 +82,7 @@ export const fetchPosts = createAsyncThunk(
 export const fetchPostWithComments = createAsyncThunk(
 	'posts/fetchPostWithComments',
 	async (permalink: string) => {
-		const url = isProd ? `/api/post?${new URLSearchParams({ permalink }).toString()}` : `https://www.reddit.com${permalink}.json`;
+		const url = `https://www.reddit.com${permalink}.json`;
 		const res = await fetch(url);
 		if (!res.ok) throw new Error(`Failed to load post (${res.status})`);
 		const json = await res.json();
