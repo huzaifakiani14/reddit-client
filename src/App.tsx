@@ -5,7 +5,7 @@ import PostDetail from './pages/PostDetail'
 
 function App() {
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900">
+    <div className="min-h-screen">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
