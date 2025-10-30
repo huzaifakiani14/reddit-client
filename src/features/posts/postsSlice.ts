@@ -56,12 +56,39 @@ export const fetchPosts = createAsyncThunk(
 		if (state.posts.cache[key]) {
 			return { key, posts: state.posts.cache[key] };
 		}
-		const base = params.search
-			? `https://www.reddit.com/search.json?q=${encodeURIComponent(params.search)}`
-			: `https://www.reddit.com/r/${params.subreddit || 'popular'}.json`;
-		const res = await fetch(base);
-		if (!res.ok) throw new Error(`Failed to load posts (${res.status})`);
-		const json = await res.json();
+		const redditUrl = params.search
+			? `https://www.reddit.com/search.json?q=${encodeURIComponent(params.search)}&limit=25`
+			: `https://www.reddit.com/r/${params.subreddit || 'popular'}.json?limit=25`;
+		
+		let res: Response;
+		let json: any;
+		try {
+			// Try direct fetch first (Reddit JSON API usually allows CORS)
+			res = await fetch(redditUrl);
+			if (res.ok) {
+				json = await res.json();
+			} else {
+				// If direct fails, use CORS proxy
+				const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(redditUrl)}`;
+				res = await fetch(proxyUrl);
+				if (!res.ok) {
+					if (res.status === 429) {
+						throw new Error('Rate limited. Please wait a minute and try again.');
+					}
+					throw new Error(`Failed to load posts (${res.status})`);
+				}
+				json = await res.json();
+			}
+		} catch (err: any) {
+			if (err.name === 'TypeError' && err.message.includes('fetch')) {
+				throw new Error('Network error. Check internet connection.');
+			}
+			throw err;
+		}
+		
+		if (!json || !json.data) {
+			throw new Error('Invalid response from Reddit API');
+		}
 		const posts: RedditPost[] = (json?.data?.children || [])
 			.map((c: any) => c.data)
 			.map((p: any) => ({
